@@ -203,29 +203,29 @@ RMSE <- function(m, o){
 
 # time series forecast
 
-# invent dates for demonstration purpose
-maintenance_prophet <- maintenance %>%
-   as.data.frame() %>%
-   mutate(ds = as.Date(lifetime, origin = "2015-01-01")) %>%
-   select(ds, pressureInd, moistureInd, temperatureInd)
- 
-# for every cont. feature do forecast and combine into new dataframe prophet_df
-m <- prophet(maintenance_prophet)
-future <- make_future_dataframe(m, periods = 30)
-forecast <- predict(m, future)
- 
- # add fake lifetime variable for demonstration purpose
-prophet_df <- prophet_df %>%
-unique() %>%
-mutate(lifetime = test_df$lifetime[1:120] + 2)
- 
-# predict future based on forecast
-prophet_df_hf <- as.h2o(prophet_df[, -1])
-pred <- h2o.predict(aml_leader, prophet_df_hf)
-predict_future <- data.frame(pred = as.vector(pred[, 1])) %>%
-mutate(pred_class = ifelse(pred > cutoff, "1", "0"))
-
-predict_future <- readRDS(predict_future, "predict_future.RData")
+# # invent dates for demonstration purpose
+# maintenance_prophet <- maintenance %>%
+#    as.data.frame() %>%
+#    mutate(ds = as.Date(lifetime, origin = "2015-01-01")) %>%
+#    select(ds, pressureInd, moistureInd, temperatureInd)
+#  
+# # for every cont. feature do forecast and combine into new dataframe prophet_df
+# m <- prophet(maintenance_prophet)
+# future <- make_future_dataframe(m, periods = 30)
+# forecast <- predict(m, future)
+#  
+#  # add fake lifetime variable for demonstration purpose
+# prophet_df <- prophet_df %>%
+# unique() %>%
+# mutate(lifetime = test_df$lifetime[1:120] + 2)
+#  
+# # predict future based on forecast
+# prophet_df_hf <- as.h2o(prophet_df[, -1])
+# pred <- h2o.predict(aml_leader, prophet_df_hf)
+# predict_future <- data.frame(pred = as.vector(pred[, 1])) %>%
+# mutate(pred_class = ifelse(pred > cutoff, "1", "0"))
+# 
+# predict_future <- readRDS(predict_future, "predict_future.RData")
 ```
 
 Introduction {data-icon="fa-comment-o"}
